@@ -1,0 +1,20 @@
+Команды для shell:
+
+# Выводим лучшего пользователя
+best_author = Author.objects.order_by('-rating').values('user__username', 'rating').first()
+print(f"Лучший автор: {best_author['user__username']}, Рейтинг: {best_author['rating']}")
+
+# Выводим лучшую статью
+best_post = Post.objects.order_by('-rating').first()
+print(f"\nЛучшая статья:")
+print(f"Дата: {best_post.created_at}")
+print(f"Автор: {best_post.author.user.username}")
+print(f"Рейтинг: {best_post.rating}")
+print(f"Заголовок: {best_post.title}")
+print(f"Превью: {best_post.preview()}")
+
+# Выводим комментарии к лучшей статье
+print("\nКомментарии к лучшей статье:")
+comments = Comment.objects.filter(post=best_post).order_by('created_at')
+for comment in comments:
+    print(f"{comment.created_at} | {comment.user.username} | Рейтинг: {comment.rating} | {comment.text}")
