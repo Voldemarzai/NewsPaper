@@ -42,7 +42,6 @@ class Post(models.Model):
         (ARTICLE, 'Статья'),
         (NEWS, 'Новость'),
     ]
-
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     post_type = models.CharField(max_length=2, choices=POST_TYPES)
     created_at = models.DateTimeField(auto_now_add=True)

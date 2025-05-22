@@ -1,0 +1,29 @@
+{% extends 'default.html' %}
+{% load custom_filters %}!
+<!-- Подключаем новый файл с нашим тегом -->
+{% block title %}{{ post.title|censor }}{% endblock title %}
+
+{% block content %}
+<article class="news-detail">
+    <h1>{{ post.title|censor }}</h1>
+    <div class="post-content">
+        {{ post.content|censor|linebreaks }}
+    </div>
+    <div class="post-meta">
+        <p>Опубликовано: {{ post.created_at|date:"d.m.Y" }}   Автор: {{ post.author.user.username }}</p>
+        <p>Тип: {{ post.get_post_type_display }}</p>
+        <p>Рейтинг: {{ post.rating }}</p>
+    </div>
+
+    <div class="actions">
+        <a href="{% url 'news_list' %}" class="back-link">← К списку новостей</a>
+    </div>
+</article>
+
+{% for comment in comments %}
+    <div class="comment">
+        <p>{{ comment.user.username }}: {{ comment.text|censor }}</p>
+        <p>{{ comment.created_at|date:"d.m.Y" }}</p>
+    </div>
+{% endfor %}
+{% endblock content %}
