@@ -1,8 +1,9 @@
 {% extends 'default.html' %}
+{% load custom_filters %}
 
 {% block content %}
-<h1>{{ post.title }}</h1>
-<p>{{ post.content }}</p>
+<h1>{{ post.title|censor }}</h1>
+<p>{{ post.content|censor }}</p>
 <p>
     Дата: {{ post.created_at|date:"d.m.Y" }}, Автор: {{ post.author.user.username }}, Тип: {{ post.get_post_type_display }}
     {% if post.author.user == request.user %}
@@ -14,7 +15,7 @@
 <h3>Комментарии:</h3>
 {% for comment in comments %}
     <div>
-        <p>{{ comment.text }}</p>
+        <p>{{ comment.text|censor }}</p>
         <p>Автор: {{ comment.user.username }}, Дата: {{ comment.created_at|date:"d.m.Y" }}</p>
     </div>
 {% empty %}
