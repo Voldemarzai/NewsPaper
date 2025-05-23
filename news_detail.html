@@ -1,0 +1,25 @@
+{% extends 'default.html' %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<p>
+    Дата: {{ post.created_at|date:"d.m.Y" }}, Автор: {{ post.author.user.username }}, Тип: {{ post.get_post_type_display }}
+    {% if post.author.user == request.user %}
+        <a href="{% if post.post_type == 'NW' %}{% url 'post_edit' post.pk %}{% else %}{% url 'article_edit' post.pk %}{% endif %}">Редактировать</a>
+        <a href="{% if post.post_type == 'NW' %}{% url 'post_delete' post.pk %}{% else %}{% url 'article_delete' post.pk %}{% endif %}">Удалить</a>
+    {% endif %}
+</p>
+
+<h3>Комментарии:</h3>
+{% for comment in comments %}
+    <div>
+        <p>{{ comment.text }}</p>
+        <p>Автор: {{ comment.user.username }}, Дата: {{ comment.created_at|date:"d.m.Y" }}</p>
+    </div>
+{% empty %}
+    <p>Комментариев пока нет.</p>
+{% endfor %}
+
+<a href="{% url 'news_list' %}">← На главную</a>
+{% endblock %}

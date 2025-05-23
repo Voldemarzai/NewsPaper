@@ -1,9 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Газета Костромская правда{% endblock %}</title>
+    <style>
+        .header {
+            text-align: center;
+        }
+        .pagination {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">
+        <h1>Газета Костромская правда</h1>
+    </div>
+
+    <div class="navigation">
+        <a href="{% url 'post_search' %}" class="btn">Поиск</a>
+        <a href="{% url 'news_create' %}" class="btn">Создать новость</a>
+        <a href="{% url 'article_create' %}" class="btn">Создать статью</a>
+    </div>
+
     {% block content %}
     {% endblock %}
 </body>
