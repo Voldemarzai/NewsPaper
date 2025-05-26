@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('news/', include('news.urls')),  # Все URL приложения news
+    path('', include('news.urls')),  # Все URL приложения news теперь в корне
 ]

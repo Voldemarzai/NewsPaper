@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+{% block content %}
+<h1>
+    {% if object %}
+        Редактирование "{{ object.title }}"
+    {% else %}
+        Создание новой {% if request.resolver_match.url_name == 'article_create' %}статьи{% else %}новости{% endif %}
+    {% endif %}
+</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+    <div class="actions">
+        <a href="{% url 'news_list' %}" class="button">← Назад</a>
+    </div>
+</form>
+{% endblock %}
