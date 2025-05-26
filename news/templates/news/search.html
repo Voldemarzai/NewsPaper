@@ -1,0 +1,39 @@
+{% extends 'default.html' %}
+{% load param_replace %}
+{% block content %}
+<h1>Поиск новостей</h1>
+<form method="GET">
+    <div>
+        <label>Название:</label>
+        {{ filterset.form.title }}
+    </div>
+    <div>
+        <label>Автор:</label>
+        {{ filterset.form.author__user__username }}
+    </div>
+    <div>
+        <label>Дата после:</label>
+        {{ filterset.form.created_after }}
+    </div>
+    <button type="submit">Искать</button>
+</form>
+<hr>
+
+{% if search_results %}
+    <div class="actions">
+        <a href="{% url 'news_list' %}" class="button">← На главную</a>
+    </div>
+    <h2>Результаты поиска ({{ search_results|length }}):</h2>
+        {% for post in search_results %}
+        <div>
+            <h3><a href="{% url 'news_detail' post.pk %}">{{ post.title }}</a></h3>
+            <p>{{ post.content|truncatechars:100 }}</p>
+            <p>Дата: {{ post.created_at|date:"d.m.Y" }}, Автор: {{ post.author.user.username }}</p>
+            <hr>
+        </div>
+    {% endfor %}
+{% elif request.GET %}
+    <p>Ничего не найдено. Попробуйте изменить параметры поиска.</p>
+
+{% endif %}
+{% endblock %}

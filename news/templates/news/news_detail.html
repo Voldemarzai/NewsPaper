@@ -1,29 +1,26 @@
 {% extends 'default.html' %}
-{% load custom_filters %}!
-<!-- Подключаем новый файл с нашим тегом -->
-{% block title %}{{ post.title|censor }}{% endblock title %}
+{% load custom_filters %}
 
 {% block content %}
-<article class="news-detail">
-    <h1>{{ post.title|censor }}</h1>
-    <div class="post-content">
-        {{ post.content|censor|linebreaks }}
-    </div>
-    <div class="post-meta">
-        <p>Опубликовано: {{ post.created_at|date:"d.m.Y" }}   Автор: {{ post.author.user.username }}</p>
-        <p>Тип: {{ post.get_post_type_display }}</p>
-        <p>Рейтинг: {{ post.rating }}</p>
-    </div>
+<h1>{{ post.title|censor }}</h1>
+<p>{{ post.content|censor }}</p>
+<p>
+    Дата: {{ post.created_at|date:"d.m.Y" }}, Автор: {{ post.author.user.username }}, Тип: {{ post.get_post_type_display }}
+    {% if post.author.user == request.user %}
+        <a href="{% if post.post_type == 'NW' %}{% url 'news_edit' post.pk %}{% else %}{% url 'article_edit' post.pk %}{% endif %}">Редактировать</a>
+        <a href="{% if post.post_type == 'NW' %}{% url 'news_delete' post.pk %}{% else %}{% url 'article_delete' post.pk %}{% endif %}">Удалить</a>
+    {% endif %}
+</p>
 
-    <div class="actions">
-        <a href="{% url 'news_list' %}" class="back-link">← К списку новостей</a>
-    </div>
-</article>
-
+<h3>Комментарии:</h3>
 {% for comment in comments %}
-    <div class="comment">
-        <p>{{ comment.user.username }}: {{ comment.text|censor }}</p>
-        <p>{{ comment.created_at|date:"d.m.Y" }}</p>
+    <div>
+        <p>{{ comment.text|censor }}</p>
+        <p>Автор: {{ comment.user.username }}, Дата: {{ comment.created_at|date:"d.m.Y" }}</p>
     </div>
+{% empty %}
+    <p>Комментариев пока нет.</p>
 {% endfor %}
-{% endblock content %}
+
+<a href="{% url 'news_list' %}">← На главную</a>
+{% endblock %}
